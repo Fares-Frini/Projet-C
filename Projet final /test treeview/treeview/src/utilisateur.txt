@@ -1,0 +1,7 @@
+fares frini 12 1 2 3 2002 1 0 
+fares frini 12 1 2 3 2005 1 0 
+fares frini 12 1 2 3 2000 1 0 
+fares frini 12 1 2 3 1999 1 0 
+fares frini 12 1 2 3 1971 1 0 
+fares frini 12 1 2 3 2010 1 0 
+marguerite christiane 14362491 2 21 5 1950 1 0 
