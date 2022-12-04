@@ -51,11 +51,11 @@ main (int argc, char *argv[])
    * (except popup menus), just so that you see something after building
    * the project. Delete any components that you don't want shown initially.
    */
-  Affichage = create_Affichage ();
-  gtk_widget_show (Affichage);
+  /*Affichage = create_Affichage ();
+  gtk_widget_show (Affichage);*/
   authentification = create_authentification ();
   gtk_widget_show (authentification);
-  ajouter = create_ajouter ();
+  /*ajouter = create_ajouter ();
   gtk_widget_show (ajouter);
   confirmer_ajout = create_confirmer_ajout ();
   gtk_widget_show (confirmer_ajout);
@@ -88,7 +88,7 @@ main (int argc, char *argv[])
   modif_sexe = create_modif_sexe ();
   gtk_widget_show (modif_sexe);
   modif_etat = create_modif_etat ();
-  gtk_widget_show (modif_etat);
+  gtk_widget_show (modif_etat);*/
 
   gtk_main ();
   return 0;

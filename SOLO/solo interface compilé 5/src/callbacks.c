@@ -312,6 +312,36 @@ void on_continuer_button_clicked(GtkWidget *objet_graphique,
 void on_modifier_modifier_button_clicked(GtkWidget *objet_graphique,
                                          gpointer user_data)
 {
+    if (choixmodif[1] == 1)
+    {
+        if (choixmodif[2] == 1)
+        {
+            if (choixmodif[3] == 1)
+            {
+                if (choixmodif[4] == 1)
+                {
+                    if (choixmodif[5] == 1)
+                    {
+                        GtkWidget *etat;
+                        etat = create_modif_etat ();
+                        gtk_widget_show(etat);
+                    }
+                    GtkWidget *sexe;
+                    sexe = create_modif_sexe ();
+                    gtk_widget_show(sexe);
+                }
+                GtkWidget *date;
+                date = create_modif_age ();
+                gtk_widget_show(date);
+            }
+            GtkWidget *prenom;
+            prenom = create_modif_prenom ();
+            gtk_widget_show(prenom);
+        }
+        GtkWidget *nom;
+        nom = create_modif_nom ();
+        gtk_widget_show(nom);
+    }
 }
 
 void on_modif_nom_check_toggled(GtkToggleButton *togglebutton,
@@ -404,24 +434,35 @@ void on_modif_etat_valider_clicked(GtkWidget *objet_graphique,
 void on_modif_date_checkbox_toggled(GtkToggleButton *togglebutton,
                                     gpointer user_data)
 {
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        choixmodif[3] = 1;
+    }
 }
 
 void on_modif_sexe_checkbox_toggled(GtkToggleButton *togglebutton,
                                     gpointer user_data)
 {
-}
-
-void on_modif_nom_check_toggled(GtkToggleButton *togglebutton,
-                                gpointer user_data)
-{
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        choixmodif[4] = 1;
+    }
 }
 
 void on_modif_Prenom_checkbox_toggled(GtkToggleButton *togglebutton,
                                       gpointer user_data)
 {
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        choixmodif[2] = 1;
+    }
 }
 
 void on_modif_etat_checkbox_toggled(GtkToggleButton *togglebutton,
                                     gpointer user_data)
+{
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
     {
+        choixmodif[5] = 1;
+    }
 }
