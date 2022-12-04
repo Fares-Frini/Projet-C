@@ -1,0 +1,5 @@
+fares frini 14362493 Homme 2/3/2002 Electeur Non_Assigne En_Attente
+fares frini 14362495 Homme 1/1/2002 Electeur Non_Assigne En_Attente
+mariem frini 14362485 Femme 5/8/2004 Agent_de_Bureau_de_Vote Non_Assigne En_Attente
+fares frini 12345678 Femme 2/3/2002 Agent_de_Bureau_de_Vote Non_Assigne En_Attente
+fares frini 74125896 Homme 1/1/2000 Electeur Non_Assigne En_Attente
