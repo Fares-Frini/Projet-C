@@ -1,0 +1,8 @@
+mariem frini 14362491 1 5 8 2002 1 0 -1
+fares frini 14362491 2 2 3 2002 1 0 -1
+fares frini 14362492 0 1 1 2002 0 0 -1
+fares frini 14362493 0 2 3 2002 0 0 -1
+fares frini 14362495 0 1 1 2002 0 0 -1
+fares frini 48624842 0 1 1 2002 0 0 -1
+mariem frini 14362485 2 5 8 2004 0 0 -1
+aicha chiboub 14362494 1 7 10 1971 1 0 -1
