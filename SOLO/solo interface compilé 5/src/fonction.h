@@ -17,10 +17,27 @@ int vote;
 }Utilisateur;
 typedef struct 
 {
-int id;
+char nom[20] ;
+char prenom[20];
+char cin[20];
+char sexe[20];
+char jour[20] ;
+char bv[20];
+char etat[20];
+char vote[20];
+}affi;
+typedef struct 
+{
+char id;
 char login[20];
 char mdp[20];
 }Admin;
+int recherche(affi p, char *filename, char *icin);
+int modifierprenom( char *nouv, char *filename);
+int modifiernom(char *nouv, char *filename);
+int modifierage(int jour,int mois,int annee, char *filename);
+int modifiersexe(int modifsexe, char *filename);
+int modifieretat(int modifetat,char *filename);
 int cin(char filename[]);
 void convert();
 void vider(GtkWidget * liste);

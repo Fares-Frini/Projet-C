@@ -16,23 +16,45 @@ enum
     BV,
     COLUMNS
 };
+int recherche(affi p, char *filename, char *icin)
+{
+    FILE *f = fopen(filename, "r");
+    int R = 0;
+    if (f != NULL)
+    {
+        while (fscanf(f, "%s %s %s %s %s %s %s %s\n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.etat, p.bv, p.vote) != EOF)
+        {
+            R+=1;
+            if ((strcmp(p.cin, icin)) == 0)
+            {
+                fclose(f);
+                return R;
+            }
+        }
+        fclose(f);
+        return 0;
+    }
+    else
+    {
+        return R;
+    }
+}
 int cin(char filename[])
 {
     FILE *f;
     int cin;
     char cinchar[20];
-    f=fopen(filename,"r");
-    if (f!=NULL)
+    f = fopen(filename, "r");
+    if (f != NULL)
     {
-        while (fscanf(f,"%s",cinchar)!=EOF);    
+        while (fscanf(f, "%s", cinchar) != EOF)
+            ;
         {
-            cin=atoi(cinchar);
+            cin = atoi(cinchar);
         }
         fclose(f);
         return cin;
-        
     }
-    
 }
 void convert()
 {
@@ -115,9 +137,9 @@ void Afficher_Personne(GtkWidget *liste)
         column = gtk_tree_view_column_new_with_attributes("CIN", renderer, "text", CIN, NULL);
         gtk_tree_view_append_column(GTK_TREE_VIEW(liste), column);
         renderer = gtk_cell_renderer_text_new();
-        column = gtk_tree_view_column_new_with_attributes("Prenom", renderer, "text", PRENOM, NULL);
+        column = gtk_tree_view_column_new_with_attributes("NOM", renderer, "text", PRENOM, NULL);
         gtk_tree_view_append_column(GTK_TREE_VIEW(liste), column);
-        column = gtk_tree_view_column_new_with_attributes("Nom", renderer, "text", NOM, NULL);
+        column = gtk_tree_view_column_new_with_attributes("PreNom", renderer, "text", NOM, NULL);
         gtk_tree_view_append_column(GTK_TREE_VIEW(liste), column);
         column = gtk_tree_view_column_new_with_attributes("Date de Naissance", renderer, "text", JOUR, NULL);
         gtk_tree_view_append_column(GTK_TREE_VIEW(liste), column);
@@ -142,7 +164,7 @@ void Afficher_Personne(GtkWidget *liste)
             while (fscanf(f, "%s %s %s %s %s %s %s %s \n ", nom, prenom, cin, sexe, jour, etat, bv, vote) != EOF)
             {
                 gtk_list_store_append(store, &iter);
-                gtk_list_store_set(store, &iter,CIN,cin,NOM,nom,PRENOM,prenom,JOUR,jour,SEXE,sexe,ETAT,etat,BV,bv,VOTE,vote, -1);
+                gtk_list_store_set(store, &iter, CIN, cin, NOM, nom, PRENOM, prenom, JOUR, jour, SEXE, sexe, ETAT, etat, BV, bv, VOTE, vote, -1);
             }
         }
         fclose(f);
@@ -315,7 +337,6 @@ int ajoutertemp(Utilisateur p, char filename[])
     else
         return 0;
 }
-
 int modifier(int cin, Utilisateur nouv, char *filename)
 {
     Utilisateur p;
@@ -332,6 +353,156 @@ int modifier(int cin, Utilisateur nouv, char *filename)
             else
 
                 fprintf(f2, "%s %s %d %d %d %d %d %d %d %d\n", nouv.nom, nouv.prenom, nouv.cin, nouv.sexe, nouv.jour, nouv.mois, nouv.annee, p.etat, p.bv, p.vote);
+        }
+        fclose(f);
+        fclose(f2);
+        remove(filename);
+        rename("aux.txt", filename);
+        return 1;
+    }
+}
+int modifiernom(char *nouv, char *filename)
+{
+    Utilisateur p;
+    int cin;
+    FILE *f = fopen(filename, "r");
+    FILE *f2 = fopen("aux.txt", "w");
+    FILE *f3 = fopen("selection.txt", "r");
+    if (f == NULL || f2 == NULL)
+        return 0;
+    else
+    {
+        while (fscanf(f3, "%d", &cin) != EOF)
+        {
+        }
+        fclose(f3);
+        while (fscanf(f, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, &p.cin, &p.sexe, &p.jour, &p.mois, &p.annee, &p.etat, &p.bv, &p.vote) != EOF)
+        {
+            if (p.cin != cin)
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d \n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+            else
+
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d\n", nouv, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+        }
+        fclose(f);
+        fclose(f2);
+        remove(filename);
+        rename("aux.txt", filename);
+        return 1;
+    }
+}
+int modifierprenom(char *nouv, char *filename)
+{
+    Utilisateur p;
+    int cin;
+    FILE *f = fopen(filename, "r");
+    FILE *f2 = fopen("aux.txt", "w");
+    FILE *f3 = fopen("selection.txt", "r");
+    if (f == NULL || f2 == NULL)
+        return 0;
+    else
+    {
+        while (fscanf(f3, "%d", &cin) != EOF)
+        {
+        }
+        fclose(f3);
+        while (fscanf(f, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, &p.cin, &p.sexe, &p.jour, &p.mois, &p.annee, &p.etat, &p.bv, &p.vote) != EOF)
+        {
+            if (p.cin != cin)
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d \n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+            else
+
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, nouv, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+        }
+        fclose(f);
+        fclose(f2);
+        remove(filename);
+        rename("aux.txt", filename);
+        return 1;
+    }
+}
+int modifierage(int jour, int mois, int annee, char *filename)
+{
+    Utilisateur p;
+    int cin;
+    FILE *f = fopen(filename, "r");
+    FILE *f2 = fopen("aux.txt", "w");
+    FILE *f3 = fopen("selection.txt", "r");
+    if (f == NULL || f2 == NULL)
+        return 0;
+    else
+    {
+        while (fscanf(f3, "%d", &cin) != EOF)
+        {
+        }
+        fclose(f3);
+        while (fscanf(f, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, &p.cin, &p.sexe, &p.jour, &p.mois, &p.annee, &p.etat, &p.bv, &p.vote) != EOF)
+        {
+            if (p.cin != cin)
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d \n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+            else
+
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, p.cin, p.sexe, jour, mois, annee, p.etat, p.bv, p.vote);
+        }
+        fclose(f);
+        fclose(f2);
+        remove(filename);
+        rename("aux.txt", filename);
+        return 1;
+    }
+}
+int modifiersexe(int modifsexe, char *filename)
+{
+    Utilisateur p;
+    int cin;
+    FILE *f = fopen(filename, "r");
+    FILE *f2 = fopen("aux.txt", "w");
+    FILE *f3 = fopen("selection.txt", "r");
+    if (f == NULL || f2 == NULL)
+        return 0;
+    else
+    {
+        while (fscanf(f3, "%d", &cin) != EOF)
+        {
+        }
+        fclose(f3);
+        while (fscanf(f, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, &p.cin, &p.sexe, &p.jour, &p.mois, &p.annee, &p.etat, &p.bv, &p.vote) != EOF)
+        {
+            if (p.cin != cin)
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d \n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+            else
+
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, p.cin, modifsexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+        }
+        fclose(f);
+        fclose(f2);
+        remove(filename);
+        rename("aux.txt", filename);
+        return 1;
+    }
+}
+int modifieretat(int modifetat, char *filename)
+{
+    Utilisateur p;
+    int cin;
+    FILE *f = fopen(filename, "r");
+    FILE *f2 = fopen("aux.txt", "w");
+    FILE *f3 = fopen("selection.txt", "r");
+    if (f == NULL || f2 == NULL)
+        return 0;
+    else
+    {
+        while (fscanf(f3, "%d", &cin) != EOF)
+        {
+        }
+        fclose(f3);
+        while (fscanf(f, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, &p.cin, &p.sexe, &p.jour, &p.mois, &p.annee, &p.etat, &p.bv, &p.vote) != EOF)
+        {
+            if (p.cin != cin)
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d \n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, p.etat, p.bv, p.vote);
+            else
+
+                fprintf(f2, "%s %s %d %d %d %d %d %d %d %d\n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.mois, p.annee, modifetat, p.bv, p.vote);
         }
         fclose(f);
         fclose(f2);

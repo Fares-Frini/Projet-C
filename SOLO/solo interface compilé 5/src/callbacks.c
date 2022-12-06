@@ -8,11 +8,16 @@
 #include "interface.h"
 #include "support.h"
 #include "fonction.h"
-int sexe = 1, role = 1;
+int sexe = 1, role = 1, modifsexe = 1, modifetat = 1;
 int choixmodif[] = {0, 0, 0, 0, 0};
 void on_modifier_button_clicked(GtkWidget *objet_graphique,
                                 gpointer user_data)
 {
+    for (int i = 0; i < 6; i++)
+    {
+        choixmodif[i] = 0;
+    }
+
     GtkWidget *conf;
     conf = create_modifier();
     gtk_widget_show(conf);
@@ -29,6 +34,57 @@ void on_supprimer_button_clicked(GtkWidget *objet_graphique,
 void on_recherche_button_clicked(GtkWidget *objet_graphique,
                                  gpointer user_data)
 {
+    affi p;
+    char filename[30] = "utilisateurAffichage.txt", tab[20], debut[200] = "L'utilsateur a ete trouvé CIN:";
+    GtkWidget *input_cin;
+    char cin[10];
+    int R;
+    input_cin = lookup_widget(objet_graphique, "recherche_entry");
+    strcpy(cin, gtk_entry_get_text(GTK_ENTRY(input_cin)));
+    R = recherche(p, filename, cin);
+    if (R != 0)
+    {
+        FILE *f = fopen(filename, "r");
+        if (f != NULL)
+        {
+            while (fscanf(f, "%s %s %s %s %s %s %s %s\n", p.nom, p.prenom, p.cin, p.sexe, p.jour, p.etat, p.bv, p.vote) == R)
+            {
+            }
+            fclose(f);
+        }
+        strcat(debut, p.cin);
+        strcat(debut, " NOM:");
+        strcat(debut, p.nom);
+        strcat(debut, " PRENOM:");
+        strcat(debut, p.prenom);
+        strcat(debut, " DATE DE NAISSANCE:");
+        strcat(debut, p.jour);
+        strcat(debut, " SEXE:");
+        strcat(debut, p.sexe);
+        strcat(debut, " Role:");
+        strcat(debut, p.etat);
+        strcat(debut, " BUREAU DE VOTE");
+        strcat(debut, p.bv);
+        strcat(debut, " Etat De VOTE");
+        strcat(debut, p.vote);
+
+        GtkWidget *output;
+        output = lookup_widget(objet_graphique, "resultat_label");
+        gtk_label_set_text(GTK_LABEL(output), debut);
+        FILE *f2;
+        f2 = fopen("selection.txt", "w");
+        if (f2!= NULL)
+        {
+            fprintf(f2, "%s", p.cin);
+            fclose(f2);
+        }
+    }
+    else
+    {
+        GtkWidget *output;
+        output = lookup_widget(objet_graphique, "resultat_label");
+        gtk_label_set_text(GTK_LABEL(output), "Aucun Utilisateur n'a ete Trouvé");
+    }
 }
 
 void on_treeview_row_activated(GtkTreeView *treeview,
@@ -51,7 +107,7 @@ void on_treeview_row_activated(GtkTreeView *treeview,
     if (gtk_tree_model_get_iter(model, &iter, path))
     {
         FILE *f;
-        f = fopen("supp.txt", "w");
+        f = fopen("selection.txt", "w");
         if (f != NULL)
         {
             gtk_tree_model_get(GTK_LIST_STORE(model), &iter, 0, &cin, 1, &nom, 2, &prenom, 3, &date, 4, &sexe, 5, &etat, 6, &bv, 7, &vote, -1);
@@ -312,35 +368,38 @@ void on_continuer_button_clicked(GtkWidget *objet_graphique,
 void on_modifier_modifier_button_clicked(GtkWidget *objet_graphique,
                                          gpointer user_data)
 {
+    GtkWidget *cont4;
+    cont4 = lookup_widget(objet_graphique, "modifier");
+    gtk_widget_hide(cont4);
     if (choixmodif[1] == 1)
     {
-        if (choixmodif[2] == 1)
-        {
-            if (choixmodif[3] == 1)
-            {
-                if (choixmodif[4] == 1)
-                {
-                    if (choixmodif[5] == 1)
-                    {
-                        GtkWidget *etat;
-                        etat = create_modif_etat ();
-                        gtk_widget_show(etat);
-                    }
-                    GtkWidget *sexe;
-                    sexe = create_modif_sexe ();
-                    gtk_widget_show(sexe);
-                }
-                GtkWidget *date;
-                date = create_modif_age ();
-                gtk_widget_show(date);
-            }
-            GtkWidget *prenom;
-            prenom = create_modif_prenom ();
-            gtk_widget_show(prenom);
-        }
         GtkWidget *nom;
-        nom = create_modif_nom ();
+        nom = create_modif_nom();
         gtk_widget_show(nom);
+    }
+    if (choixmodif[2] == 1)
+    {
+        GtkWidget *prenom;
+        prenom = create_modif_prenom();
+        gtk_widget_show(prenom);
+    }
+    if (choixmodif[3] == 1)
+    {
+        GtkWidget *date;
+        date = create_modif_age();
+        gtk_widget_show(date);
+    }
+    if (choixmodif[4] == 1)
+    {
+        GtkWidget *sexe;
+        sexe = create_modif_sexe();
+        gtk_widget_show(sexe);
+    }
+    if (choixmodif[5] == 1)
+    {
+        GtkWidget *etat;
+        etat = create_modif_etat();
+        gtk_widget_show(etat);
     }
 }
 
@@ -356,7 +415,7 @@ void on_modif_nom_check_toggled(GtkToggleButton *togglebutton,
 void on_confirmer_supp_supp_button_clicked(GtkWidget *objet_graphique,
                                            gpointer user_data)
 {
-    char filename[20] = "supp.txt";
+    char filename[20] = "selection.txt";
     int R, E;
     R = cin(filename);
     E = supprimer(R, "utilisateur.txt");
@@ -390,46 +449,107 @@ void on_confirmer_modifier_button_clicked(GtkWidget *objet_graphique,
 void on_valider_modif_nom_clicked(GtkWidget *objet_graphique,
                                   gpointer user_data)
 {
+    char nom[20], filename[20] = "utilisateur.txt";
+    int R;
+    GtkWidget *input_nom;
+    input_nom = lookup_widget(objet_graphique, "nom_modif_entry");
+    strcpy(nom, gtk_entry_get_text(GTK_ENTRY(input_nom)));
+    R = modifiernom(nom, filename);
+    GtkWidget *cont4;
+    cont4 = lookup_widget(objet_graphique, "modif_nom");
+    gtk_widget_hide(cont4);
 }
 
 void on_valider_modif_preno_clicked(GtkWidget *objet_graphique,
                                     gpointer user_data)
 {
+    char nom[20], filename[20] = "utilisateur.txt";
+    int R;
+    GtkWidget *input_nom;
+    input_nom = lookup_widget(objet_graphique, "entry_modif_prenom");
+    strcpy(nom, gtk_entry_get_text(GTK_ENTRY(input_nom)));
+    R = modifierprenom(nom, filename);
+    GtkWidget *cont4;
+    cont4 = lookup_widget(objet_graphique, "modif_prenom");
+    gtk_widget_hide(cont4);
 }
 
 void on_valider_modif_age_clicked(GtkWidget *objet_graphique,
                                   gpointer user_data)
 {
+    char filename[20] = "utilisateur.txt";
+    int R, ijour, imois, iannee;
+    GtkWidget *jour;
+    GtkWidget *mois;
+    GtkWidget *annee;
+    jour = lookup_widget(objet_graphique, "modif_jour_spin");
+    mois = lookup_widget(objet_graphique, "modif_mois_spin");
+    annee = lookup_widget(objet_graphique, "modif_annee_spin");
+    ijour = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jour));
+    imois = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(mois));
+    iannee = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(annee));
+    R = modifierage(ijour, imois, iannee, filename);
+    GtkWidget *cont4;
+    cont4 = lookup_widget(objet_graphique, "modif_age");
+    gtk_widget_hide(cont4);
 }
 
 void on_modif_sexe_femme_toggled(GtkToggleButton *togglebutton,
                                  gpointer user_data)
 {
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        modifsexe = 2;
+    }
 }
 
 void on_modif_sexe_homme_toggled(GtkToggleButton *togglebutton,
                                  gpointer user_data)
 {
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        modifsexe = 1;
+    }
 }
 
 void on_valider_modif_sexe_clicked(GtkWidget *objet_graphique,
                                    gpointer user_data)
 {
+    char filename[20] = "utilisateur.txt";
+    int R;
+    R = modifiersexe(modifsexe, filename);
+    GtkWidget *cont4;
+    cont4 = lookup_widget(objet_graphique, "modif_sexe");
+    gtk_widget_hide(cont4);
 }
 
 void on_modif_etat_electeur_toggled(GtkToggleButton *togglebutton,
                                     gpointer user_data)
 {
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        modifetat = 1;
+    }
 }
 
 void on_modif_etat_agentbv_toggled(GtkToggleButton *togglebutton,
                                    gpointer user_data)
 {
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+    {
+        modifetat = 2;
+    }
 }
 
 void on_modif_etat_valider_clicked(GtkWidget *objet_graphique,
                                    gpointer user_data)
 {
+    char filename[20] = "utilisateur.txt";
+    int R;
+    R = modifieretat(modifetat, filename);
+    GtkWidget *cont4;
+    cont4 = lookup_widget(objet_graphique, "modif_etat");
+    gtk_widget_hide(cont4);
 }
 void on_modif_date_checkbox_toggled(GtkToggleButton *togglebutton,
                                     gpointer user_data)
