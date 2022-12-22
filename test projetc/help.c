@@ -1,54 +1,90 @@
-// fonction.h
-#ifndef FONCTION_H_INCLUDED
-#define FONCTION_H_INCLUDED
-#include <stdio.h>
-#include <gtk/gtk.h>
-// fonction.c
-
-#include "fonction.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <gtk/gtk.h>
 // callbacks.c
 #include "fonction.h"
 
 //EN TETE
-    (GtkWidget *objet_graphique, gpointer user_data)
+    (GtkWidget *objet_graphique, gpointer user_data);
 
 //HIDE
-    GtkWidget *Affichage;
+    {GtkWidget *Affichage;
     Affichage = lookup_widget(objet_graphique, "id");
-    gtk_widget_hide(Affichage);
+    gtk_widget_hide(Affichage);}
 //SHOW
-    GtkWidget *authentification;
+    {GtkWidget *authentification;
     authentification = create_authentification();
-    gtk_widget_show(authentification);
+    gtk_widget_show(authentification);}
 
 //TOGGLE
-if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
-    {
-        variable = 1;
-    }
-
+{
+    if (gtk_toggle_button_get_active(GTK_RADIO_BUTTON(togglebutton)))
+        {
+            variable = 1;
+        }
+//TOOGLE INIT
+    gtk_toggle_button_set_active(GTK_RADIO_BUTTON(variable),TRUE);}
 //SPIN
-    GtkWidget *variable;
+   { GtkWidget *variable;
     variable = lookup_widget(objet_graphique, "id");
     p.jour = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(variable));
-
+//SPIN INIT
+    gtk_spin_button_set_value(variable,int);
+   }
 //ENTRY
-    GtkWidget *variable;
+    {GtkWidget *variable;
     variable = lookup_widget(objet_graphique, "entry_id");
-    strcpy(p.nom, gtk_entry_get_text(GTK_ENTRY(variable)));
+    strcpy(p.nom, gtk_entry_get_text(GTK_ENTRY(variable)));}
 
 //LABEL
-    GtkWidget *output;
-    output = lookup_widget(objet_graphique, "label_id");
-    gtk_label_set_text(GTK_LABEL(output), chaine);
+    {GtkWidget *output;
+    output  lookup_widget(objet_graphique, "label_id");
+    gtk_label_set_text(GTK_LABEL(output), chaine);}
+//COMBOBOX 
+    {GtkWidget *combobox;
+    combobox = lookup_widget(objet_graphique, "combobox_id");
+    if (strcmp("3Years", gtk_combo_box_get_active_text(GTK_COMBO_BOX(combobox))) == 0)
+    {
+        p.class = 1;
+    }
+    else
+//COMBOBOX DYN
+    GtkWidget *combobox;
+    combobox = lookup_widget(objet_graphique, "combobox_id");
+    tab[50][10];
+    n=fonction(tab,variable);
+    for (int i = 0; i < n; i++)
+    {
+        gtk_combo_box_append_text(GTK_COMBOX_BOX(combobox),(tab[i]))
+    }
+//
+    int j=0;
+    FILE *f;
+    f=fopen("file.txt","r");
+    if (f!=NULL)
+    {
+        while (fscanf(f,"%s",variable)!=EOF)
+        {
+            if(condition)
+            {
+                strcpy(tab[j],variable);
+                j++;
+            }
+        }
+        
+    }
+    fclose(f);
+    return j;
+    
 
-//COMBOBOX
-
+//COMBOBOX INITIALISE
+    GtkWidget *combobox;
+    combobox = lookup_widget(objet_graphique, "combobox_id");
+    while (i<n && strcmp(Matrice[i],classe)!=0)
+    {
+        i++;
+    }
+    gtk_combo_box_set_active(GTK_COMBO_BOX(combo1),i);
+   } 
 //TREEVIEW
+{
 enum
 {
     NOM,
@@ -126,6 +162,4 @@ enum
         g_object_unref(store);
     }
 }
-
-
 

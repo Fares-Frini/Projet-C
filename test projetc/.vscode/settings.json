@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "fonction.h": "c",
+        "support.h": "c"
+    }
+}
